@@ -648,8 +648,17 @@ class FrmDb {
 	 * @return mixed $results The cache or query results
 	 */
 	public static function check_cache( $cache_key, $group = '', $query = '', $type = 'get_var', $time = 300 ) {
-		$results = wp_cache_get( $cache_key, $group );
-		if ( ! FrmAppHelper::is_empty_value( $results, false ) || empty( $query ) ) {
+		// $results = wp_cache_get( $cache_key, $group );
+		// if ( ! FrmAppHelper::is_empty_value( $results, false ) || empty( $query ) ) {
+		// 	return $results;
+		// }
+		// AJK - block below replaces block above and correctly caches empty results
+		// This is especially important when using frm-stats in views, because the stat actually queryies the db to see if the form has any wp posts associated with it
+		// (form for post creation which we never use) so this was querying the actual DB hundreds of time with something like:
+		// SELECT id, post_id FROM wp_frm_items WHERE form_id=77 AND post_id >=1
+		$found = null;
+		$results = wp_cache_get( $cache_key, $group, false, $found );
+		if ( $found !== false || empty( $query ) ) {
 			return $results;
 		}
 
