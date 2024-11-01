@@ -1406,7 +1406,7 @@ class FrmAppHelper {
 	public static function check_selected( $values, $current ) {
 		$values  = self::recursive_function_map( $values, 'trim' );
 		$values  = self::recursive_function_map( $values, 'htmlspecialchars_decode' );
-		$current = htmlspecialchars_decode( trim( $current ) );
+		$current = is_null( $current ) ? '' : htmlspecialchars_decode( trim( $current ) );
 
 		return ( is_array( $values ) && in_array( $current, $values ) ) || ( ! is_array( $values ) && $values == $current );
 	}
@@ -1429,7 +1429,7 @@ class FrmAppHelper {
 				}
 			}
 		} else {
-			$value = call_user_func( $function, $value );
+			$value = is_null( $value ) && in_array( $function, [ 'trim', 'strlen' ], true ) ? '' : call_user_func( $function, $value );
 		}
 
 		return $value;
@@ -2327,18 +2327,19 @@ class FrmAppHelper {
 	 * Do not switch shortcodes like [24] to array unless intentional ie XML values.
 	 */
 	public static function maybe_json_decode( $string, $single_to_array = true ) {
-		if ( is_array( $string ) ) {
+		if ( is_array( $string ) || is_null( $string ) ) {
 			return $string;
 		}
 
 		$new_string = json_decode( $string, true );
-		if ( function_exists( 'json_last_error' ) ) {
+
+		if ( is_array( $new_string ) && function_exists( 'json_last_error' ) ) {
 			// php 5.3+
 			$single_value = false;
 			if ( ! $single_to_array ) {
 				$single_value = is_array( $new_string ) && count( $new_string ) === 1 && isset( $new_string[0] );
 			}
-			if ( json_last_error() == JSON_ERROR_NONE && is_array( $new_string ) && ! $single_value ) {
+			if ( ! $single_value && json_last_error() == JSON_ERROR_NONE ) {
 				$string = $new_string;
 			}
 		}
