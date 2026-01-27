@@ -229,8 +229,8 @@ class FrmProHooksController {
 		add_filter( 'frm_admin_script_strings', 'FrmProAppController::admin_js_strings' );
 
 		// Addons Controller
-		add_action( 'frm_overlay_footer', 'FrmProAddonsController::show_expired_message' );
-		add_action( 'frm_page_footer', 'FrmProAddonsController::renewal_message' );
+		// add_action( 'frm_overlay_footer', 'FrmProAddonsController::show_expired_message' );
+		// add_action( 'frm_page_footer', 'FrmProAddonsController::renewal_message' );
 
 		// Entries Controller
 		add_action('frm_after_show_entry', 'FrmProEntriesController::show_comments');
