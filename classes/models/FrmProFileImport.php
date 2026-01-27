@@ -169,8 +169,7 @@ class FrmProFileImport {
 	}
 
 	private static function get_attachment_name( $file, &$attachment ) {
-		$name_parts = pathinfo( $file );
-		$name = trim( substr( $name_parts['basename'], 0, - ( 1 + strlen( $name_parts['extension'] ) ) ) );
+		$name = pathinfo( $file, PATHINFO_FILENAME );
 		$attachment['post_title'] = $name;
 	}
 }
