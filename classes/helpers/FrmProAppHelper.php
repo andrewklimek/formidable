@@ -285,6 +285,7 @@ class FrmProAppHelper {
 	}
 
 	private static function convert_date_fallback( $date_str, $from_format, $to_format ) {
+		error_log( 'FrmProAppHelper::convert_date_fallback called — date_str: ' . print_r( $date_str, true ) . ', from_format: ' . $from_format . ', to_format: ' . $to_format );
 		$base_struc     = preg_split( '/[\/|.| |-]/', $from_format );
 		$date_str_parts = preg_split( '/[\/|.| |-]/', $date_str );
 		$date_elements = array();
@@ -301,7 +302,7 @@ class FrmProAppHelper {
 		if ( is_numeric( $date_elements['m'] ) ) {
 			$day = ( isset( $date_elements['j'] ) ? $date_elements['j'] : $date_elements['d'] );
 			$year = ( isset( $date_elements['Y'] ) ? $date_elements['Y'] : $date_elements['y'] );
-			$dummy_ts = mktime( 0, 0, 0, $date_elements['m'], $day, $year );
+			$dummy_ts = mktime( 0, 0, 0, (int) $date_elements['m'], (int) $day, (int) $year );
 		} else {
 			$dummy_ts = strtotime( $date_str );
 		}
