@@ -313,27 +313,23 @@ class FrmProStatisticsController {
 	 * @return int
 	 */
 	private static function get_stats_from_meta_values( $atts, $meta_values ) {
-		$count = count( $meta_values );
-
-		if ( $atts['type'] != 'count' ) {
-			$total = array_sum( array_map( 'floatval', $meta_values ) );
-		} else {
-			$total = 0;
-		}
-
 		switch ( $atts['type'] ) {
 			case 'average':
 			case 'mean':
 			case 'star':
-				$stat = ( $total / $count );
+				$count = count( $meta_values );
+				$total = array_sum( array_map( 'floatval', $meta_values ) );
+				$stat  = ( $total / $count );
 				break;
 			case 'median':
 				$stat = self::calculate_median( $meta_values );
 				break;
 			case 'deviation':
-				$mean = ( $total / $count );
-				$stat = 0.0;
-				foreach ( $meta_values as $i ) {
+				$count        = count( $meta_values );
+				$numeric_vals = array_map( 'floatval', $meta_values );
+				$mean         = array_sum( $numeric_vals ) / $count;
+				$stat         = 0.0;
+				foreach ( $numeric_vals as $i ) {
 					$stat += pow( $i - $mean, 2 );
 				}
 
@@ -352,15 +348,14 @@ class FrmProStatisticsController {
 				$stat = max( $meta_values );
 				break;
 			case 'count':
-				$stat = $count;
+				$stat = count( $meta_values );
 				break;
 			case 'unique':
-				$stat = array_unique( $meta_values );
-				$stat = count( $stat );
+				$stat = count( array_unique( $meta_values ) );
 				break;
 			case 'total':
 			default:
-				$stat = $total;
+				$stat = array_sum( array_map( 'floatval', $meta_values ) );
 		}
 
 		return self::get_formatted_statistic( $atts, $stat );
