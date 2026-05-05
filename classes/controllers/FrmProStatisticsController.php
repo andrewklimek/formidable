@@ -316,7 +316,7 @@ class FrmProStatisticsController {
 		$count = count( $meta_values );
 
 		if ( $atts['type'] != 'count' ) {
-			$total = array_sum( $meta_values );
+			$total = array_sum( array_map( 'floatval', $meta_values ) );
 		} else {
 			$total = 0;
 		}
