@@ -266,7 +266,7 @@ class FrmProAppHelper {
 		if ( 'db' == $to_format ) {
 			$frmpro_settings = self::get_settings();
 			$to_format = $frmpro_settings->date_format;
-		} else if ( 'db' == $from_format ) {
+		} elseif ( 'db' == $from_format ) {
 			$frmpro_settings = self::get_settings();
 			$from_format = $frmpro_settings->date_format;
 		}
@@ -435,7 +435,7 @@ class FrmProAppHelper {
 		if ( self::option_is_like( $args['where_is'] ) ) {
 			 //add extra slashes to match values that are escaped in the database
 			$args['where_val_esc'] = addslashes( $args['where_val'] );
-		} else if ( ! strpos( $args['where_is'], 'in' ) && ! is_numeric( $args['where_val'] ) ) {
+		} elseif ( strpos( $args['where_is'], 'in' ) === false && ! is_numeric( $args['where_val'] ) ) {
 			$args['where_val_esc'] = $args['where_val'];
 		}
 		$filter_args = $args;
@@ -628,7 +628,7 @@ class FrmProAppHelper {
 			if ( in_array( $args['where_is'], array( '!=', 'not LIKE' ) ) ) {
 				$remove_posts = $add_posts;
 				$add_posts = false;
-			} else if ( empty($add_posts) ) {
+			} elseif ( empty($add_posts) ) {
 				$new_ids = array();
 				return;
 			}
@@ -655,7 +655,7 @@ class FrmProAppHelper {
 			$add_posts = array_intersect( $add_posts, array_keys( $post_ids ) );
 		}
 
-		if ( $add_posts && ! empty($add_posts) ) {
+		if ( ! empty($add_posts) ) {
 			$new_ids = array();
 			foreach ( $add_posts as $add_post ) {
 				if ( ! in_array( $post_ids[ $add_post ], $new_ids ) ) {
@@ -675,7 +675,7 @@ class FrmProAppHelper {
 					unset($key);
 				}
 			}
-		} else if ( ! $add_posts ) {
+		} elseif ( ! $add_posts ) {
 			$new_ids = array();
 		}
 	}
@@ -763,9 +763,10 @@ class FrmProAppHelper {
 
 	public static function get_rand( $length ) {
 		$all_g = 'ABCDEFGHIJKLMNOPQRSTWXZ';
-		$pass = '';
+		$max   = strlen( $all_g ) - 1;
+		$pass  = '';
 		for ( $i = 0; $i < $length; $i++ ) {
-			$pass .= $all_g[ rand(0, strlen($all_g) - 1) ];
+			$pass .= $all_g[ rand( 0, $max ) ];
 		}
 		return $pass;
 	}
