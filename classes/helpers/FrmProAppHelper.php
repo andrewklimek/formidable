@@ -271,8 +271,8 @@ class FrmProAppHelper {
 			$from_format = $frmpro_settings->date_format;
 		}
 
-		if ( $from_format == 'Y-m-d' && strpos( $date_str, '00:00:00' ) ) {
-			$date_str = str_replace( ' 00:00:00', '', $date_str );
+		if ( $from_format == 'Y-m-d' && strlen( $date_str ) > 10 && strpos( $date_str, ' ' ) !== false ) {
+			$date_str = substr( $date_str, 0, 10 );
 		}
 
 		$date = date_create_from_format( $from_format, $date_str );
