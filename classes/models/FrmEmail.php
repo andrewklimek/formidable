@@ -168,6 +168,7 @@ class FrmEmail {
 		}
 
 		$this->from = $this->format_from( $from );
+		$this->from = apply_filters( 'frm_email_from', $this->from, $this->package_atts() );
 	}
 
 	/**
@@ -189,6 +190,7 @@ class FrmEmail {
 		}
 
 		$this->reply_to = $this->format_reply_to( $this->reply_to );
+		$this->reply_to = apply_filters( 'frm_email_reply_to', $this->reply_to, $this->package_atts() );
 	}
 
 	/**
