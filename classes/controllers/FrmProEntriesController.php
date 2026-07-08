@@ -3002,41 +3002,17 @@ class FrmProEntriesController {
 			ob_end_clean();
 
 			if ( empty( $emails ) ) {
-				$emails = __( 'no one', 'formidable-pro' );
+				// $emails = __( 'no one', 'formidable-pro' );
+			} else {
+				$emails = ' to ' . $emails;
 			}
 
-			printf( esc_html__( 'Resent to %s', 'formidable-pro' ), esc_html( $emails ) );
-			self::suggest_smtp();
+			printf( esc_html__( 'Resent %s', 'formidable-pro' ), esc_html( $emails ) );
 		} else {
 			esc_html_e( 'Resent to No one! You do not have permission', 'formidable-pro' );
         }
         wp_die();
     }
-
-	/**
-	 * Include a link to the SMTP page after an email is resent.
-	 *
-	 * @since 4.04.04
-	 */
-	private static function suggest_smtp() {
-		$suggest_smtp = class_exists( 'FrmSMTPController' ) && current_user_can( 'activate_plugins' ) && ! function_exists( 'wp_mail_smtp' );
-		if ( ! $suggest_smtp ) {
-			return;
-		}
-
-		$link = admin_url( 'admin.php?page=formidable-smtp' );
-		?>
-		<p>
-			<a href="<?php echo esc_url( $link ); ?>" class="frm_pro_tip">
-				<?php FrmAppHelper::icon_by_class( 'frmfont frm_star_full_icon', array( 'aria-hidden' => 'true' ) ); ?>
-				<?php esc_html_e( 'Not receiving emails?', 'formidable-pro' ); ?>
-				<span class="frm-tip-cta">
-					<?php esc_html_e( 'Setup SMTP.', 'formidable-pro' ); ?>
-				</span>
-			</a>
-		</p>
-		<?php
-	}
 
 	public static function ajax_set_cookie() {
 		check_ajax_referer( 'frm_ajax', 'nonce' );
