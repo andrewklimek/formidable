@@ -155,7 +155,6 @@ class FrmHooksController {
 
 		// add_action( 'admin_init', 'FrmUsageController::schedule_send' );// dont send usage stats
 
-		FrmSMTPController::load_hooks();
 		FrmWelcomeController::load_hooks();
 	}
 
