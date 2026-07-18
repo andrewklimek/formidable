@@ -10,21 +10,10 @@ class FrmProHooksController {
 	 * @since 3.0
 	 */
 	public static function load_pro() {
-		$frmedd_update = FrmProAppHelper::get_updater();
-
-		// load the license form
-		add_action( 'frm_upgrade_page', 'FrmProSettingsController::standalone_license_box' );
-		if ( FrmAppHelper::is_admin_page('formidable-settings') ) {
-			add_action('frm_before_settings', 'FrmProSettingsController::license_box', 1);
-		}
+		global $frm_vars;
+		$frm_vars['pro_is_authorized'] = true;
 
 		add_action( 'admin_init', 'FrmProAppController::admin_init' );
-
-		global $frm_vars;
-		if ( ! $frm_vars['pro_is_authorized'] ) {
-			add_action( 'admin_notices', 'FrmProAppController::admin_notices' );
-			return;
-		}
 
 		$frm_vars['next_page'] = array();
 		$frm_vars['prev_page'] = array();

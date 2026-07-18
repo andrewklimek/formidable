@@ -15,10 +15,7 @@ class FrmViewsAppController {
 	}
 
 	private static function include_updater() {
-		if ( class_exists( 'FrmAddon' ) ) {
-			include_once FrmViewsAppHelper::plugin_path() . '/classes/models/FrmViewsUpdate.php';
-			FrmViewsUpdate::load_hooks();
-		}
+		// FrmAddon/FrmViewsUpdate removed from load path - no license checking needed
 	}
 
 	public static function register_scripts() {
